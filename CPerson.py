@@ -3,4 +3,5 @@ class CPerson :
 
 
     def __init__(self) :
-        self.IdPerson=0 #a faire avec sqlalchemy ORM
+        
+        self.IdPerson= 0#a faire avec sqlalchemy ORM
