@@ -1,5 +1,4 @@
 from createdatabase import *
-import ClssOffers 
 
 class CUsers() :
     
@@ -25,8 +24,11 @@ class CUsers() :
         for ad in result :
             idVendeur = ad.IdUser
         prix = float(input("Entrer le montant de votre offre :"))
-        print("Creation de votre Offre")
-        offer=ClssOffers(False,prix,self.UserId,idVendeur,IdAnnonce)
+        quest ="INSERT INTO Offers(OfferAcceptation,OfferPrice,IdUserAcheteur,IdUserVendeur,IdAd) VALUES (False,"+str(prix)+","+str(self.UserId)+","+str(idVendeur)+","+str(IdAnnonce)+")"
+        sql = text(quest)
+        result = session.execute(sql)
+        session.commit()
+        print("Creation de votre Offre reussie !")
 
 
 
@@ -103,7 +105,9 @@ class CUsers() :
         Sortie = input("Veuillez entrer l'année de sortie de votre véhicule : ")
         Etat = input("Veuillez entrer l'état de votre véhicule : ")
         Km = int(input("Veuillez entrer le kilométrage de votre véhicule : "))
-        car=Cars(CarBrand=Marque,CarModel=Model,CarNumberDoors=NombrePorte,CarFuel=Carburant,CarRelease=Sortie,CarState=Etat,CarKilometer=Km )
+        requete = "INSERT INTO Cars(CarBrand,CarModel,CarNumberDoors,CarFuel,CarRelease,CarState,CarKilometer) Values('"+Marque+"','"+Model+"',"+str(NombrePorte)+",'"+Carburant+"',"+str(Sortie)+",'"+Etat+"',"+str(Km)+")"
+        sql = text (requete)
+        result = session.execute(sql)
         session.commit()
         requete3 = "SELECT * FROM Cars ORDER BY IdCar DESC LIMIT 1;"
         sql3 = text (requete3)
@@ -140,7 +144,9 @@ class CUsers() :
         result4 = session.execute(sql4)
         for userrr in result4 :
             userId = userrr.IdUser
-        annonce = Advertisement(AdName,AdTypePayement,AdLocalisation,AdPrice,AdDescription,userId,ide_car,categorie_final)
+        query_announce = "INSERT INTO Advertisement(AdName,AdTypePayement,AdLocalisation,AdPrice,AdDescription,IdUser,IdCar,IdCat) VALUES('"+AdName+"','"+AdTypePayement+"','"+AdLocalisation+"',"+str(AdPrice)+",'"+AdDescription+"',"+str(userId)+","+str(ide_car)+","+str(categorie_final)+");"
+        sql = text (query_announce)
+        resilt = session.execute(sql)
         session.commit()
 
 
