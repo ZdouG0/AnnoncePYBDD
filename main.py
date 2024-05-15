@@ -2,7 +2,7 @@ from createdatabase import*
 from ClssPerson import *
 
 #creation d'une personne
-init_database()
+#init_database()
 test = CPerson()
 
 print("\n*********************************************************************************************\n*                                                                                           *\n*    Bienvenue dans notre interface de vente de voiture entre Particulier                   *\n*                                                                                           *\n*********************************************************************************************\n")
@@ -107,7 +107,6 @@ for annonce in result :
 
 
 
-sql = text("DROP TABLE Users, Cars, Category,Advertisement,Offers;")
 result = session.execute(sql) 
 session.commit()
 #test.signin()

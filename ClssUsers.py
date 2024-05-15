@@ -1,5 +1,5 @@
 from createdatabase import *
-
+import ClssOffers 
 
 class CUsers() :
     
@@ -17,11 +17,41 @@ class CUsers() :
         self.UserPassword = password
         self.UserNumber = number
 
-    def makeoffer():
-        pass
+    def makeoffer(self,IdAnnonce):
+        string = "SELECT * from Advertisement WHERE Advertisement.IdAd ="+str(IdAnnonce)
+        sql = text(string)
+        result = session.execute(sql)
+        idVendeur=0
+        for ad in result :
+            idVendeur = ad.IdUser
+        prix = float(input("Entrer le montant de votre offre :"))
+        print("Creation de votre Offre")
+        offer=ClssOffers(False,prix,self.UserId,idVendeur,IdAnnonce)
 
-    def ResponseOffer():
-        pass
+
+
+    def ResponseOffer(self):
+        ReponseOK=False
+        while ReponseOK == False :
+            Reponse =int(input("Entrer l'identifiant de l'offre dont vous voulez changer l'etat"))
+            string = "SELECT * from Offers WHERE Offers.IdUserVendeur ="+str(self.UserId)+" AND Offers.IdOffer ="+str(Reponse)
+            sql = text(string)
+            result = session.execute(sql)
+            if result.rowcount == 0 :
+                print("Entrée incorrect veuillez reesayer!")
+            else :
+                ReponseOK = True
+        for offer in result :
+            if offer.OfferAcceptation == 0 :
+                string = "UPDATE Offers SET Offers.OfferAcceptation = True WHERE Offers.IdOffer ="+str(Reponse)
+            else :
+                string = "UPDATE Offers SET Offers.OfferAcceptation = False WHERE Offers.IdOffer ="+str(Reponse)
+            sql = text(string)
+            result = session.execute(sql)
+            session.commit()
+        self.ViewOffer()
+            
+        
     
     def ViewOffer(self):
         string = "SELECT * from Offers WHERE Offers.IdUserVendeur ="+str(self.UserId)
@@ -52,6 +82,67 @@ class CUsers() :
                 else :
                     string="Refusée"
                 print("                 ---> Etat :",string)
+        repfiltre = input("Voulez vous interagir avec vos offres [Y/N]:")
+        FiltreOk=False
+        while FiltreOk ==False:
+            if repfiltre != 'Y' and repfiltre != 'N' and repfiltre != 'y' and repfiltre != 'n':
+                repfiltre = input("Entree incorrect ! Veuillez reesayer :")
+            else :
+                FiltreOk = True
+            if repfiltre == 'y' or repfiltre=='Y':
+                self.ResponseOffer()
+
+
+    def create_announce(self):
+        print("--------- Menu de création d'annonce ---------")
+        print ("\najout de votre Vehicule :")
+        Marque = input("Veuillez entrer la marque de votre véhicule : ")
+        Model = input("Veuillez entrer le modèle de votre véhicule : ")
+        NombrePorte = int(input("Veuillez entrer le nombre de portes de votre véhicule : "))
+        Carburant = input("Veuillez entrer le carburant de votre véhicule : ")
+        Sortie = input("Veuillez entrer l'année de sortie de votre véhicule : ")
+        Etat = input("Veuillez entrer l'état de votre véhicule : ")
+        Km = int(input("Veuillez entrer le kilométrage de votre véhicule : "))
+        car=Cars(CarBrand=Marque,CarModel=Model,CarNumberDoors=NombrePorte,CarFuel=Carburant,CarRelease=Sortie,CarState=Etat,CarKilometer=Km )
+        session.commit()
+        requete3 = "SELECT * FROM Cars ORDER BY IdCar DESC LIMIT 1;"
+        sql3 = text (requete3)
+        result3 = session.execute(sql3)
+        for car in result3 :
+            ide_car=car.IdCar
+        requeteOk=False
+        print("finalisation de l'annonce :")
+        AdName = input("Veuillez entrer le nom de l'annonce : ")
+        AdTypePayement = input("Veuillez entrer le type de paiement de l'annonce : ")
+        AdLocalisation = input("Veuillez entrer la localisation de l'annonce : ")
+        AdPrice = float(input("Veuillez entrer le prix de l'annonce : "))
+        AdDescription = input("Veuillez entrer la description de l'annonce : ")
+        print ("List categorie :") 
+        sql = text("SELECT * from Category")
+        result = session.execute(sql)
+        for cate in result :
+            print ("    >>> ",cate.IdCat,cate.CatName)
+        idact = int(input("Entrez l'identifiant de la categorie que vous souhaitez ajouter :"))
+        requete2 = "SELECT * FROM Category WHERE Category.IdCat="+str(idact)+";"
+        sql2 = text (requete2)
+        result2 = session.execute(sql2)
+        requeteOk=False
+        while requeteOk==False :
+            if result2.rowcount==0 :
+                idannonce =int(input('Entree Incorrect ! Veuillez reesayer :'))
+            else:
+                requeteOk = True
+        categorie_final =0
+        for choice_cat in result2 :
+            categorie_final = choice_cat.IdCat
+        requete4 = "SELECT * FROM Users WHERE Users.UserEmail='"+self.UserEmail+"';"
+        sql4 = text (requete4)
+        result4 = session.execute(sql4)
+        for userrr in result4 :
+            userId = userrr.IdUser
+        annonce = Advertisement(AdName,AdTypePayement,AdLocalisation,AdPrice,AdDescription,userId,ide_car,categorie_final)
+        session.commit()
+
 
     def __del__(self):
         print("L'objet de la classe Cusers a été detruit")

@@ -88,7 +88,7 @@ def init_database():
     sql = text ("INSERT INTO Advertisement(IdAd,AdName,AdTypePayement,AdLocalisation,AdPrice,AdDescription,IdUser,IdCar,IdCat) VALUES(1,'Porsche 718 Cayman neuve a vendre','Main Propre','Monaco',60000,'Porsche Cayman Type 987 de 2007 avec seulement 110 096 km au compteur. Cette magnifique voiture de sport est en excellent etat. Contactez moi pour plus d informations ou pour planifier un essai.',1,1,5),(2,'Tesla Model 3 de 2022 a vendre','Main Propre','Tours',43512,'a vendre  Tesla Model 3 Phase 2 de l annee 2022, avec seulement 25 882 km parcourus. Cette voiture electrique emblematique offre une conduite fluide et silencieuse. etat impeccable, aucune reparation a prevoir.Contactez-moi pour plus de details ou pour organiser un essai routier',2,2,5);")
     result = session.execute(sql)
 
-    sql = text ("INSERT INTO Offers(IdOffer,OfferAcceptation,OfferPrice,IdUserAcheteur,IdUserVendeur,IdAd) VALUES (1,True,54000,2,1,1),(2,False,32000,3,2,2);")
+    sql = text ("INSERT INTO Offers(IdOffer,OfferAcceptation,OfferPrice,IdUserAcheteur,IdUserVendeur,IdAd) VALUES (1,True,54000,2,1,1),(2,False,32000,3,2,2),(3,False,254,3,1,1);")
     result = session.execute(sql)
 
     session.commit()
