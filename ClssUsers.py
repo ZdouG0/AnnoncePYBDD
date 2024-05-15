@@ -65,7 +65,6 @@ class CUsers() :
             for offer in result :
                 #get le nom de l'acheteur
                 string2 = "SELECT * from Users WHERE Users.IdUser ="+str(offer.IdUserAcheteur)
-                print(string2)
                 sql2 = text(string2) 
                 result2 = session.execute(sql2)
                 Acheteur=0
@@ -84,15 +83,15 @@ class CUsers() :
                 else :
                     string="Refusée"
                 print("                 ---> Etat :",string)
-        repfiltre = input("Voulez vous interagir avec vos offres [Y/N]:")
-        FiltreOk=False
-        while FiltreOk ==False:
-            if repfiltre != 'Y' and repfiltre != 'N' and repfiltre != 'y' and repfiltre != 'n':
-                repfiltre = input("Entree incorrect ! Veuillez reesayer :")
-            else :
-                FiltreOk = True
-            if repfiltre == 'y' or repfiltre=='Y':
-                self.ResponseOffer()
+            repfiltre = input("Voulez vous interagir avec vos offres [Y/N]:")
+            FiltreOk=False
+            while FiltreOk ==False:
+                if repfiltre != 'Y' and repfiltre != 'N' and repfiltre != 'y' and repfiltre != 'n':
+                    repfiltre = input("Entree incorrect ! Veuillez reesayer :")
+                else :
+                    FiltreOk = True
+                if repfiltre == 'y' or repfiltre=='Y':
+                    self.ResponseOffer()
 
 
     def create_announce(self):
@@ -149,7 +148,4 @@ class CUsers() :
         resilt = session.execute(sql)
         session.commit()
 
-
-    def __del__(self):
-        print("L'objet de la classe Cusers a été detruit")
 

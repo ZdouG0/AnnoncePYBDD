@@ -2,7 +2,7 @@ from createdatabase import*
 from ClssPerson import *
 
 #creation d'une personne
-#init_database()
+init_database()
 test = CPerson()
 def main() :
     ConnectionOK=False
@@ -24,9 +24,46 @@ def main() :
             repfiltre = input("Entree incorrect ! Veuillez reesayer :")
         else :
             FiltreOk = True
+            
     if repfiltre == 'y' or repfiltre=='Y':
-        print("Veuillez choisir vos filtres :")
-
+        repBack = input("Appliquer un filtre de localisation ? [Y/N]")
+        RepOk=False
+        while RepOk ==False:
+            
+            if repBack != 'Y' and repBack != 'N' and repBack != 'y' and repBack != 'n':
+                repBack = input("Entree incorrect ! Veuillez reesayer :")
+            else :
+                RepOk = True
+        if repBack == 'y' or repBack=='Y':
+            reponse = input("Entre la ville souhaité :")
+            string = "SELECT * FROM Advertisement WHERE Advertisement.AdLocalisation ='"+reponse+"';"
+            sql = text (string)
+            result = session.execute(sql)
+            for annonce in result :
+                print ("    >>> " ,annonce.IdAd,".",annonce.AdName,'\n')
+        repBack = input("Appliquer un filtre de prix ? [Y/N]")
+        RepOk=False
+        while RepOk ==False:
+            
+            if repBack != 'Y' and repBack != 'N' and repBack != 'y' and repBack != 'n':
+                repBack = input("Entree incorrect ! Veuillez reesayer :")
+            else :
+                RepOk = True
+        if repBack == 'y' or repBack=='Y':
+            repBack = input("Entrer le symbole souhaité ? [</=/>]")
+            RepOk=False
+            while RepOk ==False:
+                
+                if repBack != '<' and repBack != '=' and repBack != '>':
+                    repBack = input("Entree incorrect ! Veuillez reesayer :")
+                else :
+                    RepOk = True
+                    comparatif = int(input("Entrer le prix a comparer :"))
+                    string = "SELECT * FROM Advertisement WHERE Advertisement.AdPrice"+repBack+" "+str(comparatif)+";"
+                    sql = text (string)
+                    result = session.execute(sql)
+                    for annonce in result :
+                        print ("    >>> " ,annonce.IdAd,".",annonce.AdName,'\n')
     repfiltre = input("Voulez vous vous connecter afin de creer et gerer vos annonces [Y/N]:")
     FiltreOk=False
     while FiltreOk ==False:
@@ -77,6 +114,9 @@ def main() :
     while requeteOk==False :
         if result.rowcount==0 :
             idannonce =int(input('Entree Incorrect ! Veuillez reesayer :'))
+            requete = "SELECT * FROM Advertisement WHERE IdAd="+str(idannonce)+";"
+            sql = text (requete)
+            result = session.execute(sql)
         else:
             requeteOk = True
     for annonce in result :

@@ -39,20 +39,21 @@ class CPerson(object) :
                 result=0;
                 while(result!=1):
                     result = int(input())
-                self.login()
+                utilisateur = self.login()
             else :
                 print ("Mots de passe different veuillez reesayer\n")
+        return utilisateur
              
 
 
     def login(self):
         utilisateur=0
         print("Connexion\n")
-        print("Pas de compte de compte ?\n")
+        print("Pas de compte ?\n")
         print("Entrer 1 pour vous inscrire 0 sinon")
         reponse = int(input("Entrez la reponse ici :"))
         if reponse ==1 :
-            self.signin()
+            utilisateur=self.signin()
         else:
             ConnexionOk=False
             while ConnexionOk==False :
@@ -78,6 +79,4 @@ class CPerson(object) :
 
 
     
-    def __del__(self):
-        print("L'objet de la classe Cperson a été detruit")
 
