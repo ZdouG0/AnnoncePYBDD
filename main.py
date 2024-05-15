@@ -2,11 +2,11 @@ from createdatabase import*
 from ClssPerson import *
 
 #creation d'une personne
-
+init_database()
 test = CPerson()
 
-print("\n*********************************************************************************************\n*                                                                                           *\n*    Bienvenue dans notre interface de vente de voiture entre Particulier                   login*\n*                                                                                           *\n*********************************************************************************************\n")
-print ("Vous pouvez vous connecter en entrant la commande login() \n\n\n")
+print("\n*********************************************************************************************\n*                                                                                           *\n*    Bienvenue dans notre interface de vente de voiture entre Particulier                   *\n*                                                                                           *\n*********************************************************************************************\n")
+
 
 print ("________________________ Catalogues __________________________\n")
 sql = text ("SELECT * FROM Advertisement;")
@@ -27,6 +27,36 @@ while FiltreOk ==False:
 if repfiltre == 'y' or repfiltre=='Y':
     print("Veuillez choisir vos filtres :")
 
+repfiltre = input("Voulez vous vous connecter afin de creer et gerer vos annonces [Y/N]:")
+FiltreOk=False
+while FiltreOk ==False:
+    
+    if repfiltre != 'Y' and repfiltre != 'N' and repfiltre != 'y' and repfiltre != 'n':
+        repfiltre = input("Entree incorrect ! Veuillez reesayer :")
+    else :
+        FiltreOk = True
+if repfiltre == 'y' or repfiltre=='Y':
+    Utilisateur=test.login()
+    repcreate = input("Voulez vous creer une annonce ? [Y/N]")
+    RepOk=False
+    while RepOk ==False:
+        
+        if repcreate != 'Y' and repcreate != 'N' and repcreate != 'y' and repcreate != 'n':
+            repcreate = input("Entree incorrect ! Veuillez reesayer :")
+        else :
+            RepOk = True
+    if repcreate == 'y' or repcreate=='Y':
+        Utilisateur.create_announce()
+    repViewAnnonce = input("Voulez vous gerer les offres ? [Y/N]")
+    RepOk=False
+    while RepOk ==False:
+        
+        if repViewAnnonce != 'Y' and repViewAnnonce != 'N' and repViewAnnonce != 'y' and repViewAnnonce != 'n':
+            repViewAnnonce = input("Entree incorrect ! Veuillez reesayer :")
+        else :
+            RepOk = True
+    if repViewAnnonce == 'y' or repViewAnnonce=='Y':
+        Utilisateur.ViewOffer()
 
 idannonce = int(input("Entrez l'identifiant de l'annonce que vous souhaitez consulter :"))
 requete = "SELECT * FROM Advertisement WHERE IdAd="+str(idannonce)+";"
@@ -77,5 +107,7 @@ for annonce in result :
 
 
 
-
+sql = text("DROP TABLE Users, Cars, Category,Advertisement,Offers;")
+result = session.execute(sql) 
+session.commit()
 #test.signin()

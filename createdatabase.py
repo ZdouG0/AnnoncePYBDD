@@ -11,9 +11,7 @@ session= Session()
 
 
 
-sql = text("DROP TABLE Users, Cars, Category,Advertisement,Offers;")
-result = session.execute(sql) 
-#Definition de la Table Users
+
 
 class Users(Base) :
     __tablename__ = 'Users'
@@ -71,25 +69,26 @@ class Offers(Base) :
     IdAd = Column(Integer, ForeignKey('Advertisement.IdAd'),nullable=False) 
 
 
-Base.metadata.create_all(engine)  
+ 
 
 
 #ajout de données initial dans la base de donnée :
 
+def init_database():
+    Base.metadata.create_all(engine)  
+    sql = text("INSERT INTO category(IdCat,CatName) VALUES (1,'SUV'),(2,'Berline'),(3,'Coupe'),(4,'Citadine'),(5,'Sportive');")
+    result = session.execute(sql) 
 
-sql = text("INSERT INTO category(IdCat,CatName) VALUES (1,'SUV'),(2,'Berline'),(3,'Coupe'),(4,'Citadine'),(5,'Sportive');")
-result = session.execute(sql) 
+    sql = text ("INSERT INTO Cars(IdCar,CarBrand,CarModel,CarNumberDoors,CarFuel,CarRelease,CarState,CarKilometer) Values(1,'Porsche','718 Cayman Type 987',3,'Essence',2007,'Tres bonne etat',110096),(2,'Tesla','Model 3 phase 2',5,'Electrique',2022,'Tres bonne etat',25882);")
+    result = session.execute(sql) 
 
-sql = text ("INSERT INTO Cars(IdCar,CarBrand,CarModel,CarNumberDoors,CarFuel,CarRelease,CarState,CarKilometer) Values(1,'Porsche','718 Cayman Type 987',3,'Essence',2007,'Tres bonne etat',110096),(2,'Tesla','Model 3 phase 2',5,'Electrique',2022,'Tres bonne etat',25882);")
-result = session.execute(sql) 
+    sql = text ("INSERT INTO Users(IdUser,UserName,UserEmail,UserPassword,UserPhone) VALUES(1,'Siddikh','sid@gmail.com','password',0612355458),(2,'Milan','mil@gmail.com','password',0714253669),(3,'Yassine','y','p',0647586910);")
+    result = session.execute(sql)
 
-sql = text ("INSERT INTO Users(IdUser,UserName,UserEmail,UserPassword,UserPhone) VALUES(1,'Siddikh','sid@gmail.com','password',0612355458),(2,'Milan','mil@gmail.com','password',0714253669),(3,'Yassine','yass@gmail.com','password',0647586910);")
-result = session.execute(sql)
+    sql = text ("INSERT INTO Advertisement(IdAd,AdName,AdTypePayement,AdLocalisation,AdPrice,AdDescription,IdUser,IdCar,IdCat) VALUES(1,'Porsche 718 Cayman neuve a vendre','Main Propre','Monaco',60000,'Porsche Cayman Type 987 de 2007 avec seulement 110 096 km au compteur. Cette magnifique voiture de sport est en excellent etat. Contactez moi pour plus d informations ou pour planifier un essai.',1,1,5),(2,'Tesla Model 3 de 2022 a vendre','Main Propre','Tours',43512,'a vendre  Tesla Model 3 Phase 2 de l annee 2022, avec seulement 25 882 km parcourus. Cette voiture electrique emblematique offre une conduite fluide et silencieuse. etat impeccable, aucune reparation a prevoir.Contactez-moi pour plus de details ou pour organiser un essai routier',2,2,5);")
+    result = session.execute(sql)
 
-sql = text ("INSERT INTO Advertisement(IdAd,AdName,AdTypePayement,AdLocalisation,AdPrice,AdDescription,IdUser,IdCar,IdCat) VALUES(1,'Porsche 718 Cayman neuve a vendre','Main Propre','Monaco',60000,'Porsche Cayman Type 987 de 2007 avec seulement 110 096 km au compteur. Cette magnifique voiture de sport est en excellent etat. Contactez moi pour plus d informations ou pour planifier un essai.',1,1,5),(2,'Tesla Model 3 de 2022 a vendre','Main Propre','Tours',43512,'a vendre  Tesla Model 3 Phase 2 de l annee 2022, avec seulement 25 882 km parcourus. Cette voiture electrique emblematique offre une conduite fluide et silencieuse. etat impeccable, aucune reparation a prevoir.Contactez-moi pour plus de details ou pour organiser un essai routier',2,2,5);")
-result = session.execute(sql)
+    sql = text ("INSERT INTO Offers(IdOffer,OfferAcceptation,OfferPrice,IdUserAcheteur,IdUserVendeur,IdAd) VALUES (1,True,54000,2,1,1),(2,False,32000,3,2,2);")
+    result = session.execute(sql)
 
-sql = text ("INSERT INTO Offers(IdOffer,OfferAcceptation,OfferPrice,IdUserAcheteur,IdUserVendeur,IdAd) VALUES (1,False,54000,2,1,1),(2,False,32000,3,2,2);")
-result = session.execute(sql)
-
-session.commit()
+    session.commit()

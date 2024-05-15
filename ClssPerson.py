@@ -1,5 +1,6 @@
 from ClssUsers import * 
 from createdatabase import *
+
 class CPerson(object) :
 
     def __init__(self) :
@@ -29,6 +30,9 @@ class CPerson(object) :
             password2 = input("Entrez a nouveau votre mots de passe :")
             if password == password2 :
                 PasswordOk =True
+                user=Users(UserName=nom,UserEmail=email,UserPassword=password,UserPhone=phone)
+                session.add(user)
+                session.commit()
                 utilisateur = CUsers(email, password, phone,nom)
                 print("Inscription reussi, entrez 1 pour vous connecter")
                 print("\n")
@@ -42,6 +46,7 @@ class CPerson(object) :
 
 
     def login(self):
+        utilisateur=0
         print("Connexion\n")
         print("Pas de compte de compte ?\n")
         print("Entrer 1 pour vous inscrire 0 sinon")
@@ -55,12 +60,14 @@ class CPerson(object) :
                 print("\n")
                 password = input("Veuillez entrer votre mots de passe :")
                 #verfication de l'existence de l'utilisateur
-                result = session.query(Users).filter(Users.UserEmail==email)
-                if result.countrow() !=0 :
+                sql = text("SELECT * from Users WHERE Users.UserEmail ='"+email+"'") 
+                result = session.execute(sql)
+                if result.rowcount !=0 :
                     ConnexionOk=True
                     for param in result :
                         phone = param[4]
                         nom = param[2]
+                        print ("phone :",phone,"\nnom :",nom)
                     utilisateur = CUsers(email, password, phone,nom)
                     print("Connexion reussie")
                 else :
